@@ -14,19 +14,26 @@
 <title>Lift</title>
 <style>
 :root {
-  --bg: #0a0a0a;
-  --surface: #171717;
-  --card: #1f1f1f;
-  --card-hi: #2a2a2a;
-  --line: #2f2f2f;
-  --text: #f5f5f5;
-  --dim: #9a9a9a;
-  --dim2: #6a6a6a;
-  --accent: #0a84ff;
-  --success: #30d158;
-  --warn: #ff9f0a;
-  --danger: #ff453a;
-  --pr: #ffd60a;
+  --bg: #07070a;
+  --surface: #121218;
+  --card: #1a1a22;
+  --card-hi: #23232e;
+  --line: #2b2b38;
+  --text: #f5f5f7;
+  --dim: #a0a0b0;
+  --dim2: #63636f;
+  --accent: #8b5cf6;       /* violet */
+  --accent2: #6366f1;      /* indigo */
+  --accent-on: #ffffff;
+  --cardio: #f59e0b;       /* amber, for external cardio */
+  --cardio-soft: rgba(245,158,11,0.16);
+  --strength-soft: rgba(139,92,246,0.16);
+  --success: #34d399;
+  --warn: #fbbf24;
+  --danger: #f87171;
+  --pr: #fde047;
+  --grad: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --grad-cardio: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
 }
@@ -60,8 +67,10 @@ a { color: var(--accent); text-decoration: none; }
 .tabbar button.active { color: var(--accent); }
 .tabbar .ic { font-size: 22px; line-height: 1; }
 
-.card { background: var(--card); border-radius: 14px; padding: 14px 16px; }
+.card { background: var(--card); border-radius: 20px; padding: 16px 18px; }
 .card.hi { background: var(--card-hi); }
+.card.grad { background: var(--grad); color: #fff; }
+.card.grad-cardio { background: var(--grad-cardio); color: #fff; }
 .row { display: flex; align-items: center; gap: 12px; }
 .row.between { justify-content: space-between; }
 .spacer { flex: 1; }
@@ -73,15 +82,16 @@ a { color: var(--accent); text-decoration: none; }
 .chip.on { background: var(--accent); color: #fff; }
 .pill { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; background: var(--pr); color: #1a1400; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 18px; border-radius: 12px; font-weight: 700; font-size: 16px; min-height: 48px; background: var(--card); }
-.btn.primary { background: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 18px; border-radius: 14px; font-weight: 700; font-size: 16px; min-height: 48px; background: var(--card); }
+.btn.primary { background: var(--grad); color: var(--accent-on); box-shadow: 0 6px 22px rgba(99,102,241,0.28); }
+.btn.cardio { background: var(--grad-cardio); color: #fff; box-shadow: 0 6px 22px rgba(245,158,11,0.26); }
 .btn.success { background: var(--success); color: #04130a; }
-.btn.danger { background: var(--danger); }
+.btn.danger { background: var(--danger); color: #1a0507; }
 .btn.ghost { background: transparent; border: 1px solid var(--line); }
 .btn.block { width: 100%; }
-.btn.big { min-height: 64px; font-size: 18px; }
+.btn.big { min-height: 64px; font-size: 18px; border-radius: 18px; }
 .btn:active { transform: scale(0.98); }
-.btn.sm { min-height: 36px; padding: 6px 12px; font-size: 14px; }
+.btn.sm { min-height: 36px; padding: 6px 12px; font-size: 14px; border-radius: 10px; }
 
 .input, .select, .textarea {
   background: var(--card-hi); border: 1px solid transparent; border-radius: 10px;
@@ -189,9 +199,62 @@ a { color: var(--accent); text-decoration: none; }
 .divider { height: 1px; background: var(--line); margin: 4px 0; }
 
 /* Segmented control */
-.seg { display: flex; background: var(--card-hi); padding: 3px; border-radius: 10px; }
-.seg button { flex: 1; padding: 8px; border-radius: 8px; font-weight: 700; font-size: 14px; color: var(--dim); }
-.seg button.on { background: var(--accent); color: #fff; }
+.seg { display: flex; background: var(--card-hi); padding: 3px; border-radius: 12px; }
+.seg button { flex: 1; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 14px; color: var(--dim); }
+.seg button.on { background: var(--grad); color: #fff; }
+
+/* Hero program card (Home + Program today) */
+.hero { position: relative; border-radius: 22px; padding: 18px 20px; background: var(--grad); color: #fff; overflow: hidden; box-shadow: 0 10px 30px rgba(99,102,241,0.3); }
+.hero.cardio { background: var(--grad-cardio); box-shadow: 0 10px 30px rgba(245,158,11,0.26); }
+.hero.rest { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); box-shadow: none; }
+.hero .label-sm { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+.hero h2 { margin: 4px 0 2px; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+.hero .meta { font-size: 13px; opacity: 0.9; margin-bottom: 14px; }
+.hero .preview { font-size: 13px; opacity: 0.9; line-height: 1.45; margin-bottom: 14px; }
+.hero .btn-start { width: 100%; min-height: 56px; background: rgba(255,255,255,0.2); color: #fff; font-weight: 800; font-size: 17px; border-radius: 14px; backdrop-filter: blur(10px); }
+.hero .btn-start:active { background: rgba(255,255,255,0.28); }
+.hero .decor { position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.08); pointer-events: none; }
+
+/* Program week strip */
+.week-strip { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
+.week-day { background: var(--card); border-radius: 14px; padding: 10px 6px; text-align: center; border: 2px solid transparent; }
+.week-day.today { border-color: var(--accent); background: var(--strength-soft); }
+.week-day.done { background: rgba(52,211,153,0.14); }
+.week-day .d { font-size: 11px; font-weight: 700; color: var(--dim); letter-spacing: 0.05em; text-transform: uppercase; }
+.week-day .n { font-size: 18px; font-weight: 800; margin: 2px 0; }
+.week-day .t { font-size: 10px; color: var(--dim); line-height: 1.1; }
+.week-day.today .d { color: var(--accent); }
+
+/* Program full list */
+.prog-day { background: var(--card); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
+.prog-day.today { border: 2px solid var(--accent); }
+.prog-day .phead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.prog-day .ptag { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: var(--strength-soft); color: var(--accent); }
+.prog-day .ptag.cardio { background: var(--cardio-soft); color: var(--cardio); }
+.prog-day .ptag.rest { background: var(--card-hi); color: var(--dim); }
+.prog-day .ex-line { font-size: 13px; padding: 4px 0; color: var(--dim); display: flex; justify-content: space-between; gap: 8px; }
+.prog-day .ex-line b { color: var(--text); font-weight: 600; }
+
+/* Heatmap calendar */
+.heatmap { display: grid; grid-template-columns: 14px repeat(7, 1fr); gap: 3px; padding: 10px; background: var(--card); border-radius: 16px; }
+.heatmap .hm-label { font-size: 10px; color: var(--dim); display: flex; align-items: center; justify-content: center; }
+.heatmap .hm-cell { aspect-ratio: 1; border-radius: 3px; background: var(--card-hi); cursor: pointer; }
+.heatmap .hm-cell.l1 { background: rgba(139,92,246,0.35); }
+.heatmap .hm-cell.l2 { background: rgba(139,92,246,0.6); }
+.heatmap .hm-cell.l3 { background: rgba(139,92,246,0.85); }
+.heatmap .hm-cell.l4 { background: var(--accent); }
+.heatmap .hm-cell.cardio { background: rgba(245,158,11,0.5); }
+.heatmap .hm-cell.mixed { background: linear-gradient(135deg, var(--accent) 50%, var(--cardio) 50%); }
+.heatmap .hm-cell.today { outline: 2px solid var(--text); outline-offset: 1px; }
+.heatmap .hm-cell.future { opacity: 0.25; cursor: default; }
+
+/* Log list items */
+.log-sess { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center; }
+.log-sess .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.log-sess .dot.strength { background: var(--accent); }
+.log-sess .dot.cardio { background: var(--cardio); }
+.log-sess .title { font-weight: 700; }
+.log-sess .sub { color: var(--dim); font-size: 12px; }
 
 /* Links list */
 details.section summary { list-style: none; cursor: pointer; padding: 8px 0; font-weight: 700; display: flex; align-items: center; }
@@ -215,7 +278,17 @@ details.section[open] summary::after { transform: rotate(90deg); }
 
     <div id="bodyweight-card" class="card small hidden"></div>
 
-    <button class="btn primary block big" data-action="startEmpty">▶  Start Empty Workout</button>
+    <div id="today-hero"></div>
+
+    <div>
+      <div class="row between" style="margin-bottom:8px">
+        <div class="label" style="margin:0">Quick start</div>
+      </div>
+      <div class="grid2">
+        <button class="btn ghost" data-action="startEmpty">▶ Empty workout</button>
+        <button class="btn cardio" data-action="quickLogCardio">+ Log cardio</button>
+      </div>
+    </div>
 
     <div>
       <div class="row between" style="margin-bottom:8px">
@@ -227,14 +300,7 @@ details.section[open] summary::after { transform: rotate(90deg); }
 
     <div>
       <div class="row between" style="margin-bottom:8px">
-        <div class="label" style="margin:0">Suggested next</div>
-      </div>
-      <div id="suggested" class="card small muted"></div>
-    </div>
-
-    <div>
-      <div class="row between" style="margin-bottom:8px">
-        <div class="label" style="margin:0">Recent workouts</div>
+        <div class="label" style="margin:0">Recent</div>
       </div>
       <div id="recent-workouts" class="list"></div>
     </div>
@@ -243,6 +309,39 @@ details.section[open] summary::after { transform: rotate(90deg); }
       <div class="stat"><div class="n" id="stat-week-workouts">0</div><div class="l">Wk sessions</div></div>
       <div class="stat"><div class="n" id="stat-week-vol">0</div><div class="l">Wk volume</div></div>
       <div class="stat"><div class="n" id="stat-streak">0</div><div class="l">Streak</div></div>
+    </div>
+  </section>
+
+  <!-- PROGRAM -->
+  <section class="screen" data-screen="program">
+    <div class="topbar">
+      <h1>Program</h1>
+      <div class="actions"><button data-action="refreshProgram" title="Refresh">↻</button></div>
+    </div>
+    <div id="program-header"></div>
+    <div id="program-body"></div>
+  </section>
+
+  <!-- LOG / CALENDAR -->
+  <section class="screen" data-screen="log">
+    <div class="topbar">
+      <h1>Log</h1>
+      <div class="actions"><button data-action="quickLogCardio" title="Log cardio">+</button></div>
+    </div>
+
+    <div class="grid3">
+      <div class="stat"><div class="n" id="log-stat-streak">0</div><div class="l">Day streak</div></div>
+      <div class="stat"><div class="n" id="log-stat-mo">0</div><div class="l">This month</div></div>
+      <div class="stat"><div class="n" id="log-stat-cardio">0</div><div class="l">Cardio 7d</div></div>
+    </div>
+
+    <div id="heatmap"></div>
+
+    <div>
+      <div class="row between" style="margin-bottom:8px">
+        <div class="label" style="margin:0">Recent sessions</div>
+      </div>
+      <div id="log-sessions"></div>
     </div>
   </section>
 
@@ -331,8 +430,15 @@ details.section[open] summary::after { transform: rotate(90deg); }
 
     <div class="divider"></div>
 
+    <div class="label">Navigate</div>
+    <button class="btn block" data-go="exercises">📚  Exercise library</button>
+    <button class="btn block" data-go="workout">💪  Active workout</button>
+
+    <div class="divider"></div>
+
     <div class="label">Data</div>
     <button class="btn block" data-action="importCsv">Import Hevy CSV</button>
+    <button class="btn block" data-action="importAppleHealth">🍎  Import Apple Health XML</button>
     <button class="btn block" data-action="exportCsv">Export CSV (Hevy format)</button>
     <button class="btn block" data-action="exportJson">Export JSON backup</button>
     <button class="btn block" data-action="exportMarkdown">Export Markdown (for vault)</button>
@@ -349,8 +455,8 @@ details.section[open] summary::after { transform: rotate(90deg); }
   <!-- TAB BAR -->
   <nav class="tabbar">
     <button data-go="home"><span class="ic">🏠</span>Home</button>
-    <button data-go="exercises"><span class="ic">📚</span>Lib</button>
-    <button data-go="workout" id="tab-workout"><span class="ic">💪</span>Workout</button>
+    <button data-go="program"><span class="ic">🗓</span>Program</button>
+    <button data-go="log"><span class="ic">📅</span>Log</button>
     <button data-go="stats"><span class="ic">📊</span>Stats</button>
     <button data-go="settings"><span class="ic">⚙️</span>More</button>
   </nav>
@@ -421,15 +527,17 @@ const round = (n, d=1) => Math.round(n * 10**d) / 10**d;
 const KEY = "lift.v1";
 const defaultSettings = { units: "lb", restDefault: 90, sound: 1 };
 const defaultState = () => ({
-  version: 1,
+  version: 2,
   settings: { ...defaultSettings },
   exercises: DEFAULT_EXERCISES.map(e => ({ ...e, isCustom: false })),
   templates: DEFAULT_TEMPLATES.slice(),
   workouts: [],
   bodyweight: [],
+  externalSessions: [],  // cardio / boxing / spinning / wrestling / running etc.
   active: null,
 });
 let state;  // initialized in INIT (after DEFAULT_EXERCISES / DEFAULT_TEMPLATES are declared)
+let currentProgram = null; // loaded from ./programs/current.json
 
 function load() {
   try {
@@ -444,6 +552,7 @@ function load() {
     s.settings = { ...defaultSettings, ...(s.settings||{}) };
     s.templates = s.templates || [];
     s.bodyweight = s.bodyweight || [];
+    s.externalSessions = s.externalSessions || [];
     return s;
   } catch (e) {
     console.error("load failed, resetting", e);
@@ -698,10 +807,11 @@ function workoutsThisWeek() {
   return state.workouts.filter(w => new Date(w.startTime).getTime() >= cutoff).length;
 }
 function streakDays() {
-  if (!state.workouts.length) return 0;
-  const set = new Set(state.workouts.map(w => new Date(w.startTime).toDateString()));
+  const set = new Set();
+  for (const w of state.workouts) set.add(new Date(w.startTime).toDateString());
+  for (const e of (state.externalSessions||[])) set.add(new Date(e.date).toDateString());
+  if (!set.size) return 0;
   let n = 0, d = new Date(); d.setHours(0,0,0,0);
-  // If nothing today, check yesterday to start
   if (!set.has(d.toDateString())) d.setDate(d.getDate() - 1);
   while (set.has(d.toDateString())) { n++; d.setDate(d.getDate() - 1); }
   return n;
@@ -709,6 +819,9 @@ function streakDays() {
 
 /* -------------------- HOME RENDER -------------------- */
 function renderHome() {
+  // Today hero (program-driven)
+  renderTodayHero();
+
   // Body weight
   const bwEl = $("#bodyweight-card");
   if (state.bodyweight.length) {
@@ -733,28 +846,31 @@ function renderHome() {
     tpl.appendChild(el);
   }
 
-  // Suggested next
-  const sug = suggestNext();
-  $("#suggested").innerHTML = sug ? `<b>${sug.label}</b><br><span class="muted small">${sug.reason}</span>` : `<span class="muted small">Start your first workout to get suggestions.</span>`;
-
-  // Recent
+  // Recent — merge strength + cardio
   const recent = $("#recent-workouts");
   recent.innerHTML = "";
-  const recentList = state.workouts.slice().sort((a,b)=>new Date(b.startTime)-new Date(a.startTime)).slice(0, 5);
-  if (!recentList.length) recent.innerHTML = `<div class="muted small">No workouts yet. Tap Start Empty Workout above.</div>`;
-  for (const w of recentList) {
+  const merged = [
+    ...state.workouts.map(w => ({
+      kind: "strength", id: w.id, date: w.startTime, title: w.title || "Untitled",
+      sub: `${fmtDate(w.startTime)} · ${w.endTime ? fmtDuration(new Date(w.endTime)-new Date(w.startTime)) : "—"} · ${round(volumeOfWorkout(w))} vol`,
+    })),
+    ...(state.externalSessions||[]).map(e => ({
+      kind: "cardio", id: e.id, date: e.date, title: e.name || e.type || "Cardio",
+      sub: `${fmtDate(e.date)} · ${e.durationMin||0} min${e.kcal?" · "+e.kcal+" kcal":""}`,
+    })),
+  ].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
+  if (!merged.length) recent.innerHTML = `<div class="muted small">No sessions yet. Tap a template, start empty, or log cardio.</div>`;
+  for (const m of merged) {
     const el = document.createElement("div");
-    el.className = "list-item";
-    const dur = w.endTime ? fmtDuration(new Date(w.endTime)-new Date(w.startTime)) : "—";
-    const vol = round(volumeOfWorkout(w));
-    el.innerHTML = `<div style="flex:1"><div class="title">${w.title || "Untitled"}</div>
-      <div class="sub">${fmtDate(w.startTime)} · ${dur} · ${vol} vol · ${w.exercises.length} ex</div></div>
-      <button class="chip" data-view-workout="${w.id}">View</button>`;
+    el.className = "log-sess";
+    el.innerHTML = `<div class="dot ${m.kind}"></div>
+      <div style="flex:1;min-width:0"><div class="title">${escapeHtml(m.title)}</div><div class="sub">${escapeHtml(m.sub)}</div></div>
+      ${m.kind === "strength" ? `<button class="chip" data-view-workout="${m.id}">View</button>` : ""}`;
     recent.appendChild(el);
   }
 
   // Stats tiles
-  $("#stat-week-workouts").textContent = workoutsThisWeek();
+  $("#stat-week-workouts").textContent = workoutsThisWeek() + (state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= Date.now()-7*86400000).length;
   $("#stat-week-vol").textContent = round(volumeThisWeek());
   $("#stat-streak").textContent = streakDays();
 }
@@ -1606,10 +1722,489 @@ function parseCsv(text) {
   return rows.filter(r => r.length && r.some(x => x !== ""));
 }
 
+/* -------------------- PROGRAM LOADING -------------------- */
+async function loadProgram() {
+  try {
+    // Bust cache so coach updates are seen quickly
+    const res = await fetch("./programs/current.json?v=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    currentProgram = await res.json();
+    localStorage.setItem("lift.program", JSON.stringify(currentProgram));
+  } catch (e) {
+    // Fall back to cached copy
+    try {
+      const cached = localStorage.getItem("lift.program");
+      if (cached) currentProgram = JSON.parse(cached);
+    } catch {}
+  }
+  if ($$(".screen.active")[0]?.dataset.screen === "home" ||
+      $$(".screen.active")[0]?.dataset.screen === "program") render();
+}
+
+function todayDayKey() {
+  // ISO: 1=Mon … 7=Sun
+  const d = new Date();
+  const js = d.getDay();
+  return String(js === 0 ? 7 : js);
+}
+function todayProgramSession() {
+  if (!currentProgram || !currentProgram.schedule) return null;
+  const s = currentProgram.schedule[todayDayKey()];
+  return s ? { key: todayDayKey(), ...s } : null;
+}
+function programExerciseName(exId) {
+  const ex = state.exercises.find(x => x.id === exId);
+  return ex ? ex.name : exId;
+}
+function renderTodayHero() {
+  const el = $("#today-hero");
+  const sess = todayProgramSession();
+  if (!currentProgram) {
+    el.innerHTML = `
+      <div class="hero rest">
+        <div class="decor"></div>
+        <div class="label-sm">Today</div>
+        <h2>No program loaded</h2>
+        <div class="preview">Ask your coach to run <code>/coach</code> — a program will be published here.</div>
+        <button class="btn-start" data-action="refreshProgram">↻  Check again</button>
+      </div>`;
+    return;
+  }
+  if (!sess) { el.innerHTML = ""; return; }
+  if (sess.type === "rest") {
+    el.innerHTML = `
+      <div class="hero rest">
+        <div class="decor"></div>
+        <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
+        <h2>🛌  ${sess.name}</h2>
+        ${sess.note ? `<div class="preview">${escapeHtml(sess.note)}</div>` : ""}
+        <button class="btn-start" data-action="quickLogCardio">+ Log a walk / session</button>
+      </div>`;
+    return;
+  }
+  if (sess.type === "cardio") {
+    const tgt = sess.target || {};
+    el.innerHTML = `
+      <div class="hero cardio">
+        <div class="decor"></div>
+        <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
+        <h2>🥊  ${sess.name}</h2>
+        <div class="meta">${tgt.durationMin ? tgt.durationMin + " min" : ""}${tgt.kcal ? " · " + tgt.kcal + " kcal" : ""}</div>
+        ${sess.note ? `<div class="preview">${escapeHtml(sess.note)}</div>` : ""}
+        <button class="btn-start" data-action="startTodayCardio">▶  Log this session</button>
+      </div>`;
+    return;
+  }
+  // strength / conditioning
+  const exPreview = (sess.exercises || []).slice(0, 4).map(e => {
+    const name = e.exId ? programExerciseName(e.exId) : (e.name || "Exercise");
+    return `• ${name} ${e.sets}×${e.reps}`;
+  }).join("<br>");
+  const more = (sess.exercises || []).length > 4 ? `<br>+ ${(sess.exercises||[]).length - 4} more` : "";
+  el.innerHTML = `
+    <div class="hero">
+      <div class="decor"></div>
+      <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
+      <h2>${escapeHtml(sess.name)}</h2>
+      <div class="meta">${sess.duration ? sess.duration + " min · " : ""}${(sess.exercises||[]).length} exercises</div>
+      <div class="preview">${exPreview}${more}</div>
+      <button class="btn-start" data-action="startToday">▶  Start today's session</button>
+    </div>`;
+}
+
+function startFromProgramDay(dayKey) {
+  if (!currentProgram || !currentProgram.schedule) return toast("No program loaded");
+  const sess = currentProgram.schedule[dayKey];
+  if (!sess) return toast("No session this day");
+  if (sess.type === "cardio") return openCardioDialog({ name: sess.name, targetMin: sess.target?.durationMin, targetKcal: sess.target?.kcal });
+  if (sess.type === "rest") return toast("Rest day — no workout planned");
+  if (!sess.exercises || !sess.exercises.length) return toast("Session has no exercises");
+
+  if (state.active) { goto("workout"); return toast("Finish or discard the active workout first"); }
+  state.active = {
+    id: uid(),
+    title: sess.name,
+    startTime: isoDate(new Date()),
+    endTime: null,
+    description: `Planned: ${currentProgram.name || ""}${sess.note ? " — " + sess.note : ""}`,
+    programId: currentProgram.id || null,
+    programDay: dayKey,
+    exercises: sess.exercises.map(pe => {
+      const lib = pe.exId ? state.exercises.find(x => x.id === pe.exId) : null;
+      const name = lib ? lib.name : (pe.name || "Custom");
+      const setsN = Math.max(1, Number(pe.sets) || 3);
+      const sets = [];
+      for (let i = 0; i < setsN; i++) {
+        sets.push({
+          type: "normal",
+          weight: pe.target || null,
+          reps: null,
+          rpe: pe.rpe || null,
+          done: false, distance: null, duration: null,
+          targetReps: pe.reps || null,
+          targetWeight: pe.target || null,
+        });
+      }
+      return {
+        id: uid(),
+        exId: lib ? lib.id : null,
+        name,
+        notes: pe.note || "",
+        supersetId: null,
+        plannedRest: pe.rest || null,
+        sets,
+      };
+    }),
+  };
+  save();
+  goto("workout");
+  toast("Session started — hit it");
+}
+
+/* -------------------- PROGRAM SCREEN -------------------- */
+function renderProgram() {
+  const head = $("#program-header");
+  const body = $("#program-body");
+  if (!currentProgram) {
+    head.innerHTML = `<div class="card"><b>No program loaded.</b><div class="muted small" style="margin-top:6px">The coach publishes programs to <code>./programs/current.json</code>. Ask Claude to run <code>/coach</code> in the vault.</div><button class="btn block" style="margin-top:10px" data-action="refreshProgram">↻ Try fetching</button></div>`;
+    body.innerHTML = "";
+    return;
+  }
+
+  const p = currentProgram;
+  const phase = (p.phase || "volume").toUpperCase();
+  const wk = p.weekInPhase ? `Week ${p.weekInPhase}` : "";
+  head.innerHTML = `
+    <div class="card grad">
+      <div class="label-sm" style="opacity:0.85">${phase}${wk ? " · " + wk : ""}</div>
+      <div style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:4px 0 2px;">${escapeHtml(p.name || "Program")}</div>
+      <div class="small" style="opacity:0.9">${escapeHtml(p.author || "")}${p.weekOf ? " · week of " + p.weekOf : ""}</div>
+      ${p.notes ? `<div class="small" style="opacity:0.92;margin-top:10px;line-height:1.45">${escapeHtml(p.notes)}</div>` : ""}
+    </div>`;
+
+  // Week strip
+  const todayK = todayDayKey();
+  const doneDays = sessionsDoneThisWeek();
+  const names = ["","Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const strip = `<div class="week-strip">${
+    [1,2,3,4,5,6,7].map(d => {
+      const s = p.schedule?.[String(d)];
+      const isToday = String(d) === todayK;
+      const isDone = doneDays.has(String(d));
+      const short = s ? (s.type === "rest" ? "Rest" : (s.type === "cardio" ? "Cardio" : "Lift")) : "—";
+      return `<div class="week-day ${isToday?"today":""} ${isDone?"done":""}" data-prog-day="${d}">
+        <div class="d">${names[d]}</div>
+        <div class="n">${s ? (s.type === "rest" ? "🛌" : s.type === "cardio" ? "🥊" : "💪") : "·"}</div>
+        <div class="t">${short}</div>
+      </div>`;
+    }).join("")
+  }</div>`;
+
+  const days = [1,2,3,4,5,6,7].map(d => {
+    const s = p.schedule?.[String(d)];
+    if (!s) return "";
+    const isToday = String(d) === todayK;
+    const typeTag = s.type === "cardio" ? `<span class="ptag cardio">Cardio</span>` :
+                    s.type === "rest" ? `<span class="ptag rest">Rest</span>` :
+                    `<span class="ptag">${s.type || "strength"}</span>`;
+    let exList = "";
+    if (s.exercises && s.exercises.length) {
+      exList = s.exercises.map(e => {
+        const name = e.exId ? programExerciseName(e.exId) : (e.name || "—");
+        const rep = `${e.sets}×${e.reps}`;
+        const extra = [
+          e.target ? `@ ${e.target} ${unitLabel()}` : "",
+          e.rpe ? `RPE ${e.rpe}` : "",
+          e.rest ? `${e.rest}s rest` : "",
+        ].filter(Boolean).join(" · ");
+        return `<div class="ex-line"><b>${escapeHtml(name)}</b><span>${rep}</span></div>${extra ? `<div class="ex-line" style="padding-top:0"><span></span><span>${extra}</span></div>` : ""}${e.note ? `<div class="ex-line" style="padding-top:0;font-style:italic"><span></span><span>${escapeHtml(e.note)}</span></div>` : ""}`;
+      }).join("");
+    } else if (s.type === "cardio" && s.target) {
+      exList = `<div class="ex-line"><b>Target</b><span>${s.target.durationMin||"?"} min · ${s.target.kcal||"?"} kcal</span></div>`;
+    }
+    const btn = s.type === "rest" ? "" :
+      s.type === "cardio" ? `<button class="btn sm cardio" data-prog-start="${d}">Log session</button>` :
+      `<button class="btn sm primary" data-prog-start="${d}">Start</button>`;
+    return `<div class="prog-day ${isToday?"today":""}">
+      <div class="phead">
+        <div><div style="font-weight:800;font-size:16px">${names[d]} · ${escapeHtml(s.name)}</div>${typeTag} ${s.duration ? `<span class="muted small">· ${s.duration} min</span>` : ""}</div>
+        ${btn}
+      </div>
+      ${s.note ? `<div class="note-box">${escapeHtml(s.note)}</div>` : ""}
+      ${exList}
+    </div>`;
+  }).join("");
+
+  body.innerHTML = strip + `<div style="height:14px"></div>` + days;
+}
+function sessionsDoneThisWeek() {
+  // Returns Set of day keys ("1".."7") that have at least one session logged this ISO week
+  const set = new Set();
+  const now = new Date();
+  const day = now.getDay(); const mondayOffset = day === 0 ? 6 : day - 1;
+  const monday = new Date(now); monday.setHours(0,0,0,0); monday.setDate(now.getDate() - mondayOffset);
+  const allSessions = [
+    ...state.workouts.map(w => ({ date: w.startTime })),
+    ...(state.externalSessions||[]).map(e => ({ date: e.date })),
+  ];
+  for (const s of allSessions) {
+    const d = new Date(s.date);
+    if (d < monday) continue;
+    const wd = d.getDay(); const key = String(wd === 0 ? 7 : wd);
+    set.add(key);
+  }
+  return set;
+}
+
+/* -------------------- LOG SCREEN (heatmap + sessions) -------------------- */
+function renderLog() {
+  // Stats
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthMs = startOfMonth.getTime();
+  const monthlyCount = [
+    ...state.workouts.filter(w => new Date(w.startTime).getTime() >= monthMs),
+    ...(state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= monthMs),
+  ].length;
+  const cutoff7 = Date.now() - 7*86400000;
+  const cardio7 = (state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= cutoff7).length;
+  $("#log-stat-streak").textContent = streakDays();
+  $("#log-stat-mo").textContent = monthlyCount;
+  $("#log-stat-cardio").textContent = cardio7;
+
+  // Heatmap — 16 weeks (~4 months) grid, Mon-rowed
+  $("#heatmap").innerHTML = buildHeatmapHtml(16);
+
+  // Recent sessions list (strength + cardio, merged & sorted)
+  const merged = [
+    ...state.workouts.map(w => ({
+      kind: "strength",
+      id: w.id,
+      date: w.startTime,
+      title: w.title || "Workout",
+      sub: `${w.exercises.length} ex · ${round(volumeOfWorkout(w))} vol · ${w.endTime ? fmtDuration(new Date(w.endTime)-new Date(w.startTime)) : "—"}`,
+    })),
+    ...(state.externalSessions||[]).map(e => ({
+      kind: "cardio",
+      id: e.id,
+      date: e.date,
+      title: e.name || e.type || "Cardio",
+      sub: `${e.durationMin||0} min${e.kcal ? " · " + e.kcal + " kcal" : ""}${e.avgHr ? " · " + e.avgHr + " bpm" : ""}${e.source ? " · " + e.source : ""}`,
+    })),
+  ].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 30);
+
+  $("#log-sessions").innerHTML = merged.length ? merged.map(m => `
+    <div class="log-sess" data-log-open="${m.kind}:${m.id}">
+      <div class="dot ${m.kind}"></div>
+      <div style="flex:1;min-width:0">
+        <div class="title">${escapeHtml(m.title)}</div>
+        <div class="sub">${fmtDate(m.date)} · ${escapeHtml(m.sub)}</div>
+      </div>
+    </div>`).join("") : `<div class="muted small">No sessions yet. Log a workout or tap + to add cardio.</div>`;
+}
+function buildHeatmapHtml(weeks) {
+  // Build a set of day-string → { strength, cardio } counts
+  const map = new Map();
+  const add = (d, kind) => {
+    const k = new Date(d); k.setHours(0,0,0,0);
+    const key = k.toISOString().slice(0,10);
+    const cur = map.get(key) || { strength: 0, cardio: 0 };
+    cur[kind]++;
+    map.set(key, cur);
+  };
+  for (const w of state.workouts) add(w.startTime, "strength");
+  for (const e of (state.externalSessions||[])) add(e.date, "cardio");
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  // Start on Monday of (weeks-1) weeks ago
+  const dow = today.getDay(); const mondayOffset = dow === 0 ? 6 : dow - 1;
+  const startMonday = new Date(today); startMonday.setDate(today.getDate() - mondayOffset - (weeks-1)*7);
+
+  const rows = ["M","T","W","T","F","S","S"];
+  let html = `<div class="heatmap">`;
+  // Header row: spacer + week-of-month labels could go here; skip for density
+  html += `<div></div>`;
+  for (let w = 0; w < weeks; w++) html += `<div class="hm-label"></div>`;
+  // Rewrite: simpler — build as a flat grid where each column is a week and each row is a weekday
+  html = `<div class="heatmap" style="grid-template-columns: 14px repeat(${weeks}, 1fr);">`;
+  for (let row = 0; row < 7; row++) {
+    html += `<div class="hm-label">${rows[row]}</div>`;
+    for (let col = 0; col < weeks; col++) {
+      const cell = new Date(startMonday);
+      cell.setDate(startMonday.getDate() + col*7 + row);
+      const key = cell.toISOString().slice(0,10);
+      const counts = map.get(key) || { strength: 0, cardio: 0 };
+      const total = counts.strength + counts.cardio;
+      const isToday = cell.getTime() === today.getTime();
+      const isFuture = cell.getTime() > today.getTime();
+      let cls = "hm-cell";
+      if (isFuture) cls += " future";
+      else if (total === 0) {/* empty */}
+      else if (counts.strength && counts.cardio) cls += " mixed";
+      else if (counts.cardio) cls += " cardio";
+      else {
+        const lvl = total >= 3 ? 4 : total;
+        cls += " l" + Math.max(1, lvl);
+      }
+      if (isToday) cls += " today";
+      html += `<div class="${cls}" data-hm-day="${key}" title="${key}${total ? " · " + total + " session(s)" : ""}"></div>`;
+    }
+  }
+  html += `</div>`;
+  return html;
+}
+function openHeatmapDay(isoDay) {
+  const d = new Date(isoDay + "T00:00:00");
+  const dayStart = d.getTime();
+  const dayEnd = dayStart + 86400000;
+  const inDay = (t) => { const x = new Date(t).getTime(); return x >= dayStart && x < dayEnd; };
+  const strength = state.workouts.filter(w => inDay(w.startTime));
+  const cardio = (state.externalSessions||[]).filter(e => inDay(e.date));
+  if (!strength.length && !cardio.length) return;
+  const body = [
+    ...strength.map(w => `<div class="log-sess"><div class="dot strength"></div><div style="flex:1"><div class="title">${escapeHtml(w.title||"Workout")}</div><div class="sub">${w.exercises.length} ex · ${round(volumeOfWorkout(w))} vol</div></div><button class="chip" data-view-workout="${w.id}">View</button></div>`),
+    ...cardio.map(e => `<div class="log-sess"><div class="dot cardio"></div><div style="flex:1"><div class="title">${escapeHtml(e.name||e.type||"Cardio")}</div><div class="sub">${e.durationMin||0} min${e.kcal?" · "+e.kcal+" kcal":""}${e.avgHr?" · "+e.avgHr+" bpm":""}</div></div><button class="chip" data-ext-del="${e.id}">✕</button></div>`),
+  ].join("");
+  openModal(`<h2>${fmtDate(d)}</h2>${body}`);
+  $("#modal-body").addEventListener("click", (ev) => {
+    const del = ev.target.closest("[data-ext-del]");
+    if (del) {
+      const id = del.dataset.extDel;
+      state.externalSessions = (state.externalSessions||[]).filter(x => x.id !== id);
+      save(); closeModal(); render(); toast("Removed");
+    }
+  });
+}
+
+/* -------------------- CARDIO / EXTERNAL SESSION LOGGING -------------------- */
+function openCardioDialog(preset = {}) {
+  const types = [
+    { id: "boxing", label: "🥊 Boxing" },
+    { id: "spinning", label: "🚴 Spinning" },
+    { id: "wrestling", label: "🤼 Wrestling" },
+    { id: "running", label: "🏃 Running" },
+    { id: "walk", label: "🚶 Walk" },
+    { id: "swim", label: "🏊 Swim" },
+    { id: "other", label: "⋯ Other" },
+  ];
+  const guessType = preset.name ? preset.name.toLowerCase() : "";
+  const pickedType = types.find(t => guessType.includes(t.id))?.id || "boxing";
+  openModal(`
+    <h2>Log cardio session</h2>
+    <div class="field"><label class="label">Type</label>
+      <div class="picker-filters" id="c-types">
+        ${types.map(t => `<button class="chip ${t.id===pickedType?"on":""}" data-ctype="${t.id}">${t.label}</button>`).join("")}
+      </div>
+    </div>
+    <div class="field" style="margin-top:10px"><label class="label">Name (optional)</label>
+      <input class="input" id="c-name" value="${preset.name ? escapeHtml(preset.name) : ""}" placeholder="e.g. Boxing coach">
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="field"><label class="label">Duration (min)</label>
+        <input class="input" id="c-min" type="number" inputmode="numeric" value="${preset.targetMin||""}" placeholder="45">
+      </div>
+      <div class="field"><label class="label">Kcal (optional)</label>
+        <input class="input" id="c-kcal" type="number" inputmode="numeric" value="${preset.targetKcal||""}" placeholder="450">
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="field"><label class="label">Avg HR (optional)</label>
+        <input class="input" id="c-hr" type="number" inputmode="numeric" placeholder="135">
+      </div>
+      <div class="field"><label class="label">Date</label>
+        <input class="input" id="c-date" type="date" value="${new Date().toISOString().slice(0,10)}">
+      </div>
+    </div>
+    <div class="field" style="margin-top:10px"><label class="label">Note</label>
+      <textarea class="textarea" id="c-note" rows="2" placeholder="How it felt"></textarea>
+    </div>
+    <div class="row" style="margin-top:14px;gap:8px">
+      <button class="btn ghost" data-modal-close style="flex:1">Cancel</button>
+      <button class="btn cardio" id="c-save" style="flex:2">Save session</button>
+    </div>
+  `);
+  let type = pickedType;
+  $("#c-types").addEventListener("click", e => {
+    const b = e.target.closest("[data-ctype]"); if (!b) return;
+    $$("#c-types .chip").forEach(c => c.classList.toggle("on", c===b));
+    type = b.dataset.ctype;
+  });
+  $("#c-save").onclick = () => {
+    const min = Number($("#c-min").value);
+    if (!min) return toast("Duration required");
+    const dateStr = $("#c-date").value || new Date().toISOString().slice(0,10);
+    const d = new Date(dateStr + "T" + new Date().toTimeString().slice(0,5));
+    state.externalSessions = state.externalSessions || [];
+    state.externalSessions.push({
+      id: uid(),
+      type,
+      name: $("#c-name").value.trim() || types.find(t=>t.id===type)?.label || type,
+      date: d.toISOString(),
+      durationMin: min,
+      kcal: Number($("#c-kcal").value) || null,
+      avgHr: Number($("#c-hr").value) || null,
+      note: $("#c-note").value.trim(),
+      source: "manual",
+    });
+    save();
+    closeModal();
+    render();
+    toast("Cardio logged");
+  };
+}
+
+/* -------------------- APPLE HEALTH XML IMPORT -------------------- */
+function importAppleHealthXml() {
+  pickFile(".xml,.zip", (txt, name) => {
+    try {
+      if (!/<\?xml/i.test(txt) && !/HKWorkout/.test(txt)) {
+        throw new Error("Doesn't look like an Apple Health export.xml. Unzip export.zip first.");
+      }
+      // Parse HKWorkout tags using regex (XML parser would blow memory on multi-MB files)
+      const re = /<Workout\b[^>]*\/?>(?:[\s\S]*?<\/Workout>)?/g;
+      const workoutTags = txt.match(re) || [];
+      if (!workoutTags.length) throw new Error("No <Workout> entries found.");
+      const attr = (tag, key) => {
+        const m = tag.match(new RegExp(`\\b${key}="([^"]*)"`));
+        return m ? m[1] : null;
+      };
+      const typeShort = t => (t||"").replace(/^HKWorkoutActivityType/, "").toLowerCase();
+      const imported = workoutTags.map(t => ({
+        id: uid(),
+        type: typeShort(attr(t,"workoutActivityType")),
+        name: typeShort(attr(t,"workoutActivityType")) || "Workout",
+        date: attr(t, "startDate") || new Date().toISOString(),
+        durationMin: Math.round(Number(attr(t, "duration") || 0)),
+        kcal: Number(attr(t, "totalEnergyBurned")) || null,
+        avgHr: null,
+        source: "Apple Health",
+      })).filter(x => x.durationMin > 0);
+      if (!imported.length) throw new Error("No valid workouts parsed.");
+
+      openConfirm(
+        `Import ${imported.length} Apple Health workouts?`,
+        `From <b>${escapeHtml(name)}</b>. Existing entries with the same start time will be skipped.`,
+        () => {
+          const existing = new Set((state.externalSessions||[]).map(e => e.date));
+          let added = 0;
+          for (const s of imported) {
+            if (existing.has(s.date)) continue;
+            state.externalSessions.push(s); added++;
+          }
+          save(); render(); toast(`Added ${added} session(s)`);
+        },
+        "Import"
+      );
+    } catch (e) { toast("Import failed: " + e.message, 3500); }
+  });
+}
+
 /* -------------------- ROOT RENDER -------------------- */
 function render() {
   const active = $$(".screen.active")[0]?.dataset.screen;
   if (active === "home") renderHome();
+  else if (active === "program") renderProgram();
+  else if (active === "log") renderLog();
   else if (active === "workout") renderActiveWorkout();
   else if (active === "exercises") renderExercisesScreen();
   else if (active === "stats") renderStats();
@@ -1624,12 +2219,32 @@ document.addEventListener("click", (e) => {
   const tplE = e.target.closest("[data-tpl-edit]");
   const view = e.target.closest("[data-view-workout]");
   const close = e.target.closest("[data-modal-close]");
+  const progStart = e.target.closest("[data-prog-start]");
+  const progDay = e.target.closest("[data-prog-day]");
+  const hm = e.target.closest("[data-hm-day]");
+  const logOpen = e.target.closest("[data-log-open]");
 
   if (close) return closeModal();
   if (go) return goto(go.dataset.go);
   if (tpl) return startFromTemplate(tpl.dataset.tpl);
   if (tplE) return editTemplate(tplE.dataset.tplEdit);
   if (view) return openWorkoutView(view.dataset.viewWorkout);
+  if (progStart) return startFromProgramDay(progStart.dataset.progStart);
+  if (progDay && !progStart) return startFromProgramDay(progDay.dataset.progDay);
+  if (hm && !hm.classList.contains("future")) return openHeatmapDay(hm.dataset.hmDay);
+  if (logOpen) {
+    const [kind, id] = logOpen.dataset.logOpen.split(":");
+    if (kind === "strength") return openWorkoutView(id);
+    // cardio: show a confirm to delete
+    const sess = (state.externalSessions||[]).find(x => x.id === id);
+    if (sess) {
+      openConfirm(`${sess.name || "Cardio"}`, `${fmtDate(sess.date)} · ${sess.durationMin} min. Delete?`, () => {
+        state.externalSessions = state.externalSessions.filter(x => x.id !== id);
+        save(); render(); toast("Removed");
+      }, "Delete");
+    }
+    return;
+  }
 
   if (!a) return;
   switch (a.dataset.action) {
@@ -1645,9 +2260,18 @@ document.addEventListener("click", (e) => {
     case "newExercise": createCustomExercise(); break;
     case "importCsv": importCsv(); break;
     case "importJson": importJson(); break;
+    case "importAppleHealth": importAppleHealthXml(); break;
     case "exportCsv": exportCsv(); break;
     case "exportJson": exportJson(); break;
     case "exportMarkdown": exportMarkdown(); break;
+    case "quickLogCardio": openCardioDialog(); break;
+    case "startToday": startFromProgramDay(todayDayKey()); break;
+    case "startTodayCardio": {
+      const sess = todayProgramSession();
+      openCardioDialog(sess ? { name: sess.name, targetMin: sess.target?.durationMin, targetKcal: sess.target?.kcal } : {});
+      break;
+    }
+    case "refreshProgram": loadProgram().then(() => toast("Program refreshed")); break;
     case "clearAll":
       openConfirm("Erase all data?", "Workouts, templates, body weight, and custom exercises will be gone. Export first if unsure.", () => {
         state = defaultState(); save(); render(); toast("Cleared");
@@ -1700,9 +2324,13 @@ window.addEventListener("error", (ev) => {
 });
 
 state = load();
+// Hydrate last-known program from localStorage so the hero card renders offline immediately
+try { const c = localStorage.getItem("lift.program"); if (c) currentProgram = JSON.parse(c); } catch {}
 bindActiveWorkoutEvents();
 renderSettings();
 goto("home");
+// Fetch fresh program in background (will re-render home/program if visible)
+loadProgram();
 
 // Service worker
 if ("serviceWorker" in navigator) {
