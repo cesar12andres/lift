@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Lift · Icon generator</title>
+<style>
+  body { font: 16px/1.5 -apple-system, system-ui, sans-serif; background:#0a0a0a; color:#eee; padding:24px; max-width:520px; margin:auto; }
+  h1 { margin-top: 0; }
+  button { background:#0a84ff; color:#fff; border:0; padding:12px 20px; border-radius:10px; font-weight:700; cursor:pointer; font-size:16px; }
+  canvas { display:block; margin:12px auto; background:transparent; border-radius:12px; }
+  .row { display:flex; gap:8px; align-items:center; margin:10px 0; }
+  p { color:#aaa; }
+  code { background:#222; padding:2px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+<h1>Generate PNG icons</h1>
+<p>This page renders <code>icon.svg</code> into PNG files at 192×192 and 512×512 so iOS / Android home-screen installs use a crisp icon. Click <b>Download both</b> and save them into this folder as <code>icon-192.png</code> and <code>icon-512.png</code>.</p>
+
+<div class="row">
+  <canvas id="c192" width="192" height="192"></canvas>
+  <canvas id="c512" width="512" height="512" style="width:192px;height:192px"></canvas>
+</div>
+
+<button id="go">Download both</button>
+
+<script>
+const svgUrl = "icon.svg";
+async function draw() {
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = svgUrl; });
+  for (const [id, size] of [["c192", 192], ["c512", 512]]) {
+    const c = document.getElementById(id);
+    const ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, size, size);
+    ctx.drawImage(img, 0, 0, size, size);
+  }
+}
+function dl(id, name) {
+  const c = document.getElementById(id);
+  c.toBlob((b) => {
+    const url = URL.createObjectURL(b);
+    const a = document.createElement("a");
+    a.href = url; a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  }, "image/png");
+}
+document.getElementById("go").onclick = () => {
+  dl("c192", "icon-192.png");
+  setTimeout(() => dl("c512", "icon-512.png"), 200);
+};
+draw();
+</script>
+</body>
+</html>
