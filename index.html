@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#080c14">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,26 +14,26 @@
 <title>Lift</title>
 <style>
 :root {
-  --bg: #07070a;
-  --surface: #121218;
-  --card: #1a1a22;
-  --card-hi: #23232e;
-  --line: #2b2b38;
-  --text: #f5f5f7;
-  --dim: #a0a0b0;
-  --dim2: #63636f;
-  --accent: #8b5cf6;       /* violet */
-  --accent2: #6366f1;      /* indigo */
-  --accent-on: #ffffff;
-  --cardio: #f59e0b;       /* amber, for external cardio */
-  --cardio-soft: rgba(245,158,11,0.16);
-  --strength-soft: rgba(139,92,246,0.16);
-  --success: #34d399;
-  --warn: #fbbf24;
-  --danger: #f87171;
-  --pr: #fde047;
-  --grad: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-  --grad-cardio: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  --bg: #080c14;
+  --surface: #0d1320;
+  --card: #141e30;
+  --card-hi: #1a2640;
+  --line: #1f3050;
+  --text: #e8edf5;
+  --dim: #6b82a0;
+  --dim2: #3d5270;
+  --accent: #00c8ff;       /* electric cyan */
+  --accent2: #0066ff;      /* electric blue */
+  --accent-on: #001a33;
+  --cardio: #ff6b1a;       /* vibrant orange */
+  --cardio-soft: rgba(255,107,26,0.15);
+  --strength-soft: rgba(0,200,255,0.12);
+  --success: #00e676;
+  --warn: #ffab00;
+  --danger: #ff4b5c;
+  --pr: #ffd700;
+  --grad: linear-gradient(135deg, #00c8ff 0%, #0066ff 100%);
+  --grad-cardio: linear-gradient(135deg, #ff6b1a 0%, #ff1a4b 100%);
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
 }
@@ -49,7 +49,7 @@ a { color: var(--accent); text-decoration: none; }
 
 #app { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; padding-bottom: calc(64px + var(--sab)); }
 .screen { display: none; flex-direction: column; padding: calc(12px + var(--sat)) 16px 20px; gap: 16px; }
-.screen.active { display: flex; }
+.screen.active { display: flex; animation: fadeIn 0.2s ease-out; }
 
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 4px 0 8px; }
 .topbar h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
@@ -59,15 +59,16 @@ a { color: var(--accent); text-decoration: none; }
 .tabbar {
   position: fixed; left: 0; right: 0; bottom: 0; height: calc(56px + var(--sab));
   padding-bottom: var(--sab);
-  background: rgba(15,15,15,0.9); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  background: rgba(8,12,20,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
   border-top: 1px solid var(--line);
   display: flex; z-index: 50;
 }
-.tabbar button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--dim2); font-size: 10px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+.tabbar button { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--dim2); font-size: 10px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; transition: color 0.2s; }
 .tabbar button.active { color: var(--accent); }
+.tabbar button.active::after { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 20px; height: 3px; border-radius: 2px; background: var(--accent); }
 .tabbar .ic { font-size: 22px; line-height: 1; }
 
-.card { background: var(--card); border-radius: 20px; padding: 16px 18px; }
+.card { background: var(--card); border-radius: 20px; padding: 16px 18px; border: 1px solid var(--line); }
 .card.hi { background: var(--card-hi); }
 .card.grad { background: var(--grad); color: #fff; }
 .card.grad-cardio { background: var(--grad-cardio); color: #fff; }
@@ -80,11 +81,11 @@ a { color: var(--accent); text-decoration: none; }
 .mono { font-variant-numeric: tabular-nums; }
 .chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; background: var(--card-hi); font-size: 12px; font-weight: 600; color: var(--dim); }
 .chip.on { background: var(--accent); color: #fff; }
-.pill { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; background: var(--pr); color: #1a1400; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; }
+.pill { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; background: var(--pr); color: #1a1400; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; animation: prBurst 0.5s ease-out; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 18px; border-radius: 14px; font-weight: 700; font-size: 16px; min-height: 48px; background: var(--card); }
-.btn.primary { background: var(--grad); color: var(--accent-on); box-shadow: 0 6px 22px rgba(99,102,241,0.28); }
-.btn.cardio { background: var(--grad-cardio); color: #fff; box-shadow: 0 6px 22px rgba(245,158,11,0.26); }
+.btn.primary { background: var(--grad); color: var(--accent-on); box-shadow: 0 6px 22px rgba(0,200,255,0.28); }
+.btn.cardio { background: var(--grad-cardio); color: #fff; box-shadow: 0 6px 22px rgba(255,107,26,0.26); }
 .btn.success { background: var(--success); color: #04130a; }
 .btn.danger { background: var(--danger); color: #1a0507; }
 .btn.ghost { background: transparent; border: 1px solid var(--line); }
@@ -102,7 +103,7 @@ a { color: var(--accent); text-decoration: none; }
 .field { display: flex; flex-direction: column; }
 
 .list { display: flex; flex-direction: column; gap: 8px; }
-.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border-radius: 12px; min-height: 56px; }
+.list-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border-radius: 12px; min-height: 56px; animation: slideUp 0.3s ease-out both; border: 1px solid var(--line); }
 .list-item .title { font-weight: 600; }
 .list-item .sub { color: var(--dim); font-size: 13px; }
 
@@ -112,7 +113,7 @@ a { color: var(--accent); text-decoration: none; }
 }
 .sets-head { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
 .sets-row { background: var(--card); border-radius: 10px; margin: 3px 0; padding: 6px; }
-.sets-row.done { background: rgba(48,209,88,0.12); }
+.sets-row.done { background: rgba(0,230,118,0.12); }
 .sets-row input { background: var(--card-hi); border: 0; border-radius: 8px; padding: 10px 4px; text-align: center; width: 100%; font-weight: 700; }
 .sets-row input:focus { outline: 2px solid var(--accent); }
 .sets-row .idx { text-align: center; font-weight: 800; color: var(--dim); font-size: 13px; }
@@ -124,7 +125,7 @@ a { color: var(--accent); text-decoration: none; }
 .set-type-dot.failure { background: var(--danger); }
 .set-type-dot.drop { background: #bf5af2; }
 
-.exercise-card { background: var(--card); border-radius: 14px; padding: 10px 12px 12px; margin-bottom: 12px; }
+.exercise-card { background: var(--card); border-radius: 14px; padding: 10px 12px 12px; margin-bottom: 12px; animation: slideUp 0.3s ease-out both; border: 1px solid var(--line); overflow: hidden; }
 .exercise-card h3 { margin: 4px 4px 6px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .exercise-card .ex-actions { display: flex; gap: 6px; margin-left: auto; }
 .exercise-card .ex-actions button { width: 32px; height: 32px; border-radius: 8px; background: var(--card-hi); display: flex; align-items: center; justify-content: center; font-size: 16px; }
@@ -136,7 +137,7 @@ a { color: var(--accent); text-decoration: none; }
 #repcounter .head { display: flex; justify-content: space-between; align-items: center; color: var(--dim); font-weight: 600; }
 #repcounter .bignum { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 45vw; font-weight: 900; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
 #repcounter .tap { min-height: 140px; background: var(--accent); border-radius: 20px; font-size: 28px; font-weight: 800; margin-bottom: 10px; }
-#repcounter .tap:active { transform: scale(0.99); background: #0060d6; }
+#repcounter .tap:active { transform: scale(0.99); background: #0055cc; }
 #repcounter .subactions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
 /* Rest timer */
@@ -147,7 +148,7 @@ a { color: var(--accent); text-decoration: none; }
   box-shadow: 0 6px 24px rgba(0,0,0,0.4);
   border: 1px solid var(--line);
 }
-#resttimer.open { display: flex; }
+#resttimer.open { display: flex; animation: breathe 3s ease-in-out infinite; }
 #resttimer .time { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; min-width: 70px; }
 #resttimer .bar { flex: 1; height: 6px; background: var(--card); border-radius: 4px; overflow: hidden; }
 #resttimer .bar > div { height: 100%; background: var(--accent); transition: width 0.5s linear; }
@@ -156,6 +157,36 @@ a { color: var(--accent); text-decoration: none; }
 #resttimer.done { background: var(--success); color: #04130a; animation: flash 0.4s 3; }
 #resttimer.done .bar > div { background: #04130a; }
 @keyframes flash { 50% { opacity: 0.6; } }
+@keyframes slideUp {
+  from { transform: translateY(22px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-150%) skewX(-15deg); }
+  100% { transform: translateX(350%)  skewX(-15deg); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 10px 40px rgba(0,102,255,0.35); }
+  50%       { box-shadow: 0 14px 50px rgba(0,200,255,0.5); }
+}
+@keyframes prBurst {
+  0%   { transform: scale(1)   rotate(0deg);  }
+  40%  { transform: scale(1.4) rotate(-4deg); }
+  70%  { transform: scale(0.9) rotate(2deg);  }
+  100% { transform: scale(1)   rotate(0deg);  }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.85; }
+  50%       { opacity: 1;    }
+}
+@keyframes countIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
 
 /* Modal */
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 90; display: none; }
@@ -188,13 +219,13 @@ a { color: var(--accent); text-decoration: none; }
 .hidden { display: none !important; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.stat { background: var(--card); border-radius: 12px; padding: 12px; }
+.stat { background: var(--card); border-radius: 12px; padding: 12px; animation: countIn 0.4s ease-out both; border: 1px solid var(--line); }
 .stat .n { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
 .stat .l { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
 
 /* Toast */
 #toast { position: fixed; left: 50%; transform: translateX(-50%); top: calc(20px + var(--sat)); background: var(--card-hi); padding: 10px 16px; border-radius: 12px; z-index: 120; font-weight: 600; display: none; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
-#toast.open { display: block; }
+#toast.open { display: block; animation: slideUp 0.22s ease-out; }
 
 .divider { height: 1px; background: var(--line); margin: 4px 0; }
 
@@ -204,8 +235,8 @@ a { color: var(--accent); text-decoration: none; }
 .seg button.on { background: var(--grad); color: #fff; }
 
 /* Hero program card (Home + Program today) */
-.hero { position: relative; border-radius: 22px; padding: 18px 20px; background: var(--grad); color: #fff; overflow: hidden; box-shadow: 0 10px 30px rgba(99,102,241,0.3); }
-.hero.cardio { background: var(--grad-cardio); box-shadow: 0 10px 30px rgba(245,158,11,0.26); }
+.hero { position: relative; border-radius: 22px; padding: 18px 20px; background: var(--grad); color: #fff; overflow: hidden; box-shadow: 0 10px 40px rgba(0,102,255,0.35); animation: pulseGlow 5s ease-in-out infinite; }
+.hero.cardio { background: var(--grad-cardio); box-shadow: 0 10px 40px rgba(255,107,26,0.30); animation: none; }
 .hero.rest { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); box-shadow: none; }
 .hero .label-sm { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
 .hero h2 { margin: 4px 0 2px; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
@@ -214,12 +245,14 @@ a { color: var(--accent); text-decoration: none; }
 .hero .btn-start { width: 100%; min-height: 56px; background: rgba(255,255,255,0.2); color: #fff; font-weight: 800; font-size: 17px; border-radius: 14px; backdrop-filter: blur(10px); }
 .hero .btn-start:active { background: rgba(255,255,255,0.28); }
 .hero .decor { position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.08); pointer-events: none; }
+.hero .decor2 { position: absolute; left: -40px; bottom: -50px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.05); pointer-events: none; }
+.hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.09) 50%, transparent 62%); animation: shimmer 4s infinite 1s; pointer-events: none; }
 
 /* Program week strip */
 .week-strip { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
 .week-day { background: var(--card); border-radius: 14px; padding: 10px 6px; text-align: center; border: 2px solid transparent; }
 .week-day.today { border-color: var(--accent); background: var(--strength-soft); }
-.week-day.done { background: rgba(52,211,153,0.14); }
+.week-day.done { background: rgba(0,230,118,0.14); }
 .week-day .d { font-size: 11px; font-weight: 700; color: var(--dim); letter-spacing: 0.05em; text-transform: uppercase; }
 .week-day .n { font-size: 18px; font-weight: 800; margin: 2px 0; }
 .week-day .t { font-size: 10px; color: var(--dim); line-height: 1.1; }
@@ -232,24 +265,23 @@ a { color: var(--accent); text-decoration: none; }
 .prog-day .ptag { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: var(--strength-soft); color: var(--accent); }
 .prog-day .ptag.cardio { background: var(--cardio-soft); color: var(--cardio); }
 .prog-day .ptag.rest { background: var(--card-hi); color: var(--dim); }
-.prog-day .ex-line { font-size: 13px; padding: 4px 0; color: var(--dim); display: flex; justify-content: space-between; gap: 8px; }
 .prog-day .ex-line b { color: var(--text); font-weight: 600; }
 
 /* Heatmap calendar */
 .heatmap { display: grid; grid-template-columns: 14px repeat(7, 1fr); gap: 3px; padding: 10px; background: var(--card); border-radius: 16px; }
 .heatmap .hm-label { font-size: 10px; color: var(--dim); display: flex; align-items: center; justify-content: center; }
 .heatmap .hm-cell { aspect-ratio: 1; border-radius: 3px; background: var(--card-hi); cursor: pointer; }
-.heatmap .hm-cell.l1 { background: rgba(139,92,246,0.35); }
-.heatmap .hm-cell.l2 { background: rgba(139,92,246,0.6); }
-.heatmap .hm-cell.l3 { background: rgba(139,92,246,0.85); }
-.heatmap .hm-cell.l4 { background: var(--accent); }
-.heatmap .hm-cell.cardio { background: rgba(245,158,11,0.5); }
+.heatmap .hm-cell.l1 { background: rgba(0,200,255,0.25); }
+.heatmap .hm-cell.l2 { background: rgba(0,200,255,0.5); }
+.heatmap .hm-cell.l3 { background: rgba(0,200,255,0.78); }
+.heatmap .hm-cell.l4 { background: var(--accent); box-shadow: 0 0 6px rgba(0,200,255,0.5); }
+.heatmap .hm-cell.cardio { background: rgba(255,107,26,0.55); }
 .heatmap .hm-cell.mixed { background: linear-gradient(135deg, var(--accent) 50%, var(--cardio) 50%); }
 .heatmap .hm-cell.today { outline: 2px solid var(--text); outline-offset: 1px; }
 .heatmap .hm-cell.future { opacity: 0.25; cursor: default; }
 
 /* Log list items */
-.log-sess { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center; }
+.log-sess { background: var(--card); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center; animation: slideUp 0.3s ease-out both; border: 1px solid var(--line); }
 .log-sess .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .log-sess .dot.strength { background: var(--accent); }
 .log-sess .dot.cardio { background: var(--cardio); }
@@ -260,6 +292,26 @@ a { color: var(--accent); text-decoration: none; }
 details.section summary { list-style: none; cursor: pointer; padding: 8px 0; font-weight: 700; display: flex; align-items: center; }
 details.section summary::after { content: "›"; margin-left: auto; transition: transform 0.2s; font-size: 22px; color: var(--dim); }
 details.section[open] summary::after { transform: rotate(90deg); }
+
+/* Exercise visual system */
+.mg-chip {
+  display: inline-flex; align-items: center;
+  padding: 2px 7px; border-radius: 4px;
+  font-size: 11px; font-weight: 700; line-height: 1.6;
+  white-space: nowrap;
+}
+.mg-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+.eq-badge { font-size: 14px; opacity: 0.8; flex-shrink: 0; }
+.ex-color-strip {
+  height: 3px; margin: -10px -12px 10px;
+  border-radius: 3px 3px 0 0; flex-shrink: 0;
+}
+.mg-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; flex-shrink: 0;
+  margin-right: 5px; vertical-align: middle;
+}
+.prog-day .ex-line { font-size: 13px; padding: 4px 0; color: var(--dim); display: flex; justify-content: space-between; gap: 8px; align-items: center; }
 </style>
 </head>
 <body>
@@ -502,6 +554,36 @@ details.section[open] summary::after { transform: rotate(90deg); }
    Lift — tap-to-count workout tracker
    Single-file PWA, localStorage-backed, Hevy-format CSV compatible.
    ========================================================================== */
+
+/* ── Exercise visual system ──────────────────────────────────────────────── */
+const MUSCLE_META = {
+  'Chest':      { color: '#ef4444' },
+  'Back':       { color: '#3b82f6' },
+  'Quads':      { color: '#a855f7' },
+  'Hamstrings': { color: '#f59e0b' },
+  'Glutes':     { color: '#ec4899' },
+  'Shoulders':  { color: '#06b6d4' },
+  'Rear Delts': { color: '#14b8a6' },
+  'Biceps':     { color: '#10b981' },
+  'Triceps':    { color: '#f97316' },
+  'Core':       { color: '#84cc16' },
+  'Calves':     { color: '#a78bfa' },
+  'Traps':      { color: '#eab308' },
+  'Forearms':   { color: '#f43f5e' },
+  'Full Body':  { color: '#94a3b8' },
+};
+const EQUIPMENT_ICON = {
+  'Barbell': '🏋️', 'Dumbbell': '🏃', 'Machine': '⚙️',
+  'Cable': '🔗', 'Smith Machine': '🔩', 'Bodyweight': '🤸', 'Other': '○'
+};
+function getMuscleColor(mg) { return (MUSCLE_META[mg] || {}).color || '#6b82a0'; }
+function renderMuscleChips(mgs) {
+  return (mgs || []).map(mg => {
+    const c = getMuscleColor(mg);
+    return `<span class="mg-chip" style="background:${c}22;color:${c};border:1px solid ${c}44">${mg}</span>`;
+  }).join('');
+}
+function getEqIcon(eq) { return EQUIPMENT_ICON[eq] || '○'; }
 
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -976,15 +1058,22 @@ function renderActiveWorkout() {
   a.exercises.forEach((ex, exIdx) => {
     const card = document.createElement("div");
     card.className = "exercise-card";
+    card.style.animationDelay = `${exIdx * 60}ms`;
     const lastSets = lastSetsOfExercise(ex.name);
+    const exObj = state.exercises.find(x => x.name === ex.name);
+    const primaryMg = exObj ? (exObj.mg[0] || '') : '';
+    const mgColor = getMuscleColor(primaryMg);
+    const eqIcon = exObj ? getEqIcon(exObj.equipment || '') : '';
     card.innerHTML = `
+      <div class="ex-color-strip" style="background:${mgColor}"></div>
       <div class="row">
-        <h3><span>${ex.name}</span></h3>
+        <h3><span>${ex.name}</span><span class="eq-badge" style="font-size:15px">${eqIcon}</span></h3>
         <div class="ex-actions">
           <button data-ex-note="${exIdx}" title="Note">📝</button>
           <button data-ex-menu="${exIdx}" title="More">⋯</button>
         </div>
       </div>
+      ${exObj && exObj.mg.length ? `<div class="mg-chips" style="margin:0 4px 8px">${renderMuscleChips(exObj.mg)}</div>` : ''}
       ${ex.notes ? `<div class="note-box">${escapeHtml(ex.notes)}</div>` : ""}
       <div class="sets-head">
         <div class="idx">#</div>
@@ -1327,10 +1416,21 @@ function renderExercisesScreen() {
   const q = $("#ex-search").value.toLowerCase();
   const mg = filters.dataset.mg || "";
   const items = state.exercises.filter(e => (!mg || e.mg.includes(mg)) && (!q || e.name.toLowerCase().includes(q)));
-  $("#ex-list").innerHTML = items.map(e => {
+  $("#ex-list").innerHTML = items.map((e, i) => {
     const best = exerciseBestSet(e.name);
-    const bestStr = best ? `<div class="sub">PR <b>${best.weight}×${best.reps}</b> · est ${round(best.est)} ${unitLabel()}</div>` : `<div class="sub muted">No history</div>`;
-    return `<div class="list-item" data-open-ex="${e.name}"><div style="flex:1"><div class="title">${e.name}</div><div class="sub">${e.mg.join(" · ")} · ${e.equipment||""}</div>${bestStr}</div></div>`;
+    const bestStr = best ? `<div class="sub">PR <b>${best.weight}×${best.reps}</b> · est ${round(best.est)} ${unitLabel()}</div>` : `<div class="sub muted" style="color:var(--dim2)">No history</div>`;
+    const primaryMg = e.mg[0] || '';
+    const mgColor = getMuscleColor(primaryMg);
+    return `<div class="list-item" data-open-ex="${e.name}" style="border-left:3px solid ${mgColor};animation-delay:${i*40}ms">
+      <div style="flex:1;min-width:0">
+        <div class="title" style="display:flex;align-items:center;gap:6px">
+          <span>${e.name}</span>
+          <span class="eq-badge">${getEqIcon(e.equipment)}</span>
+        </div>
+        <div class="mg-chips">${renderMuscleChips(e.mg)}</div>
+        ${bestStr}
+      </div>
+    </div>`;
   }).join("") || `<div class="muted small">No matches.</div>`;
   $("#ex-list").onclick = (ev) => {
     const t = ev.target.closest("[data-open-ex]"); if (!t) return;
@@ -1762,7 +1862,7 @@ function renderTodayHero() {
   if (!currentProgram) {
     el.innerHTML = `
       <div class="hero rest">
-        <div class="decor"></div>
+        <div class="decor"></div><div class="decor2"></div>
         <div class="label-sm">Today</div>
         <h2>No program loaded</h2>
         <div class="preview">Ask your coach to run <code>/coach</code> — a program will be published here.</div>
@@ -1774,7 +1874,7 @@ function renderTodayHero() {
   if (sess.type === "rest") {
     el.innerHTML = `
       <div class="hero rest">
-        <div class="decor"></div>
+        <div class="decor"></div><div class="decor2"></div>
         <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
         <h2>🛌  ${sess.name}</h2>
         ${sess.note ? `<div class="preview">${escapeHtml(sess.note)}</div>` : ""}
@@ -1786,7 +1886,7 @@ function renderTodayHero() {
     const tgt = sess.target || {};
     el.innerHTML = `
       <div class="hero cardio">
-        <div class="decor"></div>
+        <div class="decor"></div><div class="decor2"></div>
         <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
         <h2>🥊  ${sess.name}</h2>
         <div class="meta">${tgt.durationMin ? tgt.durationMin + " min" : ""}${tgt.kcal ? " · " + tgt.kcal + " kcal" : ""}</div>
@@ -1803,7 +1903,7 @@ function renderTodayHero() {
   const more = (sess.exercises || []).length > 4 ? `<br>+ ${(sess.exercises||[]).length - 4} more` : "";
   el.innerHTML = `
     <div class="hero">
-      <div class="decor"></div>
+      <div class="decor"></div><div class="decor2"></div>
       <div class="label-sm">Today · ${currentProgram.name || "Program"}</div>
       <h2>${escapeHtml(sess.name)}</h2>
       <div class="meta">${sess.duration ? sess.duration + " min · " : ""}${(sess.exercises||[]).length} exercises</div>
@@ -1917,7 +2017,9 @@ function renderProgram() {
           e.rpe ? `RPE ${e.rpe}` : "",
           e.rest ? `${e.rest}s rest` : "",
         ].filter(Boolean).join(" · ");
-        return `<div class="ex-line"><b>${escapeHtml(name)}</b><span>${rep}</span></div>${extra ? `<div class="ex-line" style="padding-top:0"><span></span><span>${extra}</span></div>` : ""}${e.note ? `<div class="ex-line" style="padding-top:0;font-style:italic"><span></span><span>${escapeHtml(e.note)}</span></div>` : ""}`;
+        const exDef = state.exercises.find(x => x.id === e.exId);
+        const mgDot = exDef && exDef.mg[0] ? `<span class="mg-dot" style="background:${getMuscleColor(exDef.mg[0])}"></span>` : '';
+        return `<div class="ex-line"><b style="display:flex;align-items:center">${mgDot}${escapeHtml(name)}</b><span>${rep}</span></div>${extra ? `<div class="ex-line" style="padding-top:0"><span></span><span style="color:var(--dim)">${extra}</span></div>` : ""}${e.note ? `<div class="ex-line" style="padding-top:0;font-style:italic"><span></span><span>${escapeHtml(e.note)}</span></div>` : ""}`;
       }).join("");
     } else if (s.type === "cardio" && s.target) {
       exList = `<div class="ex-line"><b>Target</b><span>${s.target.durationMin||"?"} min · ${s.target.kcal||"?"} kcal</span></div>`;
