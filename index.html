@@ -312,6 +312,22 @@ details.section[open] summary::after { transform: rotate(90deg); }
   margin-right: 5px; vertical-align: middle;
 }
 .prog-day .ex-line { font-size: 13px; padding: 4px 0; color: var(--dim); display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.ex-demo {
+  width: 100%; border-radius: 14px; overflow: hidden;
+  background: var(--card-hi); margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 80px; position: relative;
+}
+.ex-demo img {
+  width: 100%; max-height: 300px; object-fit: cover;
+  display: block; border-radius: 14px;
+}
+.ex-demo-label {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.55); color: #fff;
+  font-size: 10px; font-weight: 700; padding: 3px 7px;
+  border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+}
 </style>
 </head>
 <body>
@@ -584,6 +600,100 @@ function renderMuscleChips(mgs) {
   }).join('');
 }
 function getEqIcon(eq) { return EQUIPMENT_ICON[eq] || '○'; }
+
+/* ── Exercise demo GIF URLs (muscle.wiki) ───────────────────────────────── */
+const EX_GIF = {
+  'squat-back':          'https://muscle.wiki/barbell-squat.gif',
+  'squat-front':         'https://muscle.wiki/front-squat.gif',
+  'squat-hack':          'https://muscle.wiki/hack-squat.gif',
+  'squat-pendulum':      'https://muscle.wiki/pendulum-squat.gif',
+  'leg-press':           'https://muscle.wiki/leg-press.gif',
+  'leg-extension':       'https://muscle.wiki/leg-extension.gif',
+  'lunge-db':            'https://muscle.wiki/dumbbell-lunge.gif',
+  'bulgarian':           'https://muscle.wiki/bulgarian-split-squat.gif',
+  'pistol-squat':        'https://muscle.wiki/pistol-squat.gif',
+  'step-up':             'https://muscle.wiki/step-up.gif',
+  'dl-barbell':          'https://muscle.wiki/barbell-deadlift.gif',
+  'rdl-barbell':         'https://muscle.wiki/romanian-deadlift.gif',
+  'rdl-db':              'https://muscle.wiki/dumbbell-romanian-deadlift.gif',
+  'leg-curl-seated':     'https://muscle.wiki/seated-leg-curl.gif',
+  'leg-curl-lying':      'https://muscle.wiki/lying-leg-curl.gif',
+  'good-morning':        'https://muscle.wiki/good-morning.gif',
+  'hip-thrust':          'https://muscle.wiki/hip-thrust.gif',
+  'hip-abd':             'https://muscle.wiki/hip-abduction.gif',
+  'hip-add':             'https://muscle.wiki/hip-adduction.gif',
+  'calf-standing':       'https://muscle.wiki/standing-calf-raise.gif',
+  'calf-seated':         'https://muscle.wiki/seated-calf-raise.gif',
+  'bench-bb':            'https://muscle.wiki/barbell-bench-press.gif',
+  'bench-incline-bb':    'https://muscle.wiki/incline-barbell-bench-press.gif',
+  'bench-decline-bb':    'https://muscle.wiki/decline-barbell-bench-press.gif',
+  'bench-db':            'https://muscle.wiki/dumbbell-bench-press.gif',
+  'bench-incline-db':    'https://muscle.wiki/incline-dumbbell-bench-press.gif',
+  'chest-press-machine': 'https://muscle.wiki/machine-chest-press.gif',
+  'pec-deck':            'https://muscle.wiki/pec-deck.gif',
+  'cable-fly':           'https://muscle.wiki/cable-crossover.gif',
+  'cable-fly-low':       'https://muscle.wiki/low-cable-crossover.gif',
+  'pushup':              'https://muscle.wiki/push-up.gif',
+  'dip':                 'https://muscle.wiki/chest-dip.gif',
+  'pullup':              'https://muscle.wiki/pull-up.gif',
+  'chinup':              'https://muscle.wiki/chin-up.gif',
+  'chinup-assisted':     'https://muscle.wiki/assisted-pull-up.gif',
+  'lat-pulldown':        'https://muscle.wiki/lat-pulldown.gif',
+  'lat-pulldown-machine':'https://muscle.wiki/lat-pulldown.gif',
+  'row-seated-cable':    'https://muscle.wiki/seated-cable-row.gif',
+  'row-seated-machine':  'https://muscle.wiki/machine-row.gif',
+  'row-bent-bb':         'https://muscle.wiki/barbell-row.gif',
+  'row-tbar':            'https://muscle.wiki/t-bar-row.gif',
+  'row-db':              'https://muscle.wiki/dumbbell-row.gif',
+  'row-chest-supported': 'https://muscle.wiki/chest-supported-row.gif',
+  'straight-arm-pd':     'https://muscle.wiki/straight-arm-pulldown.gif',
+  'face-pull':           'https://muscle.wiki/face-pull.gif',
+  'ohp-bb':              'https://muscle.wiki/overhead-press.gif',
+  'ohp-db':              'https://muscle.wiki/dumbbell-shoulder-press.gif',
+  'arnold':              'https://muscle.wiki/arnold-press.gif',
+  'lat-raise':           'https://muscle.wiki/lateral-raise.gif',
+  'lat-raise-cable':     'https://muscle.wiki/cable-lateral-raise.gif',
+  'front-raise':         'https://muscle.wiki/front-raise.gif',
+  'rear-delt-fly':       'https://muscle.wiki/rear-delt-fly.gif',
+  'rear-delt-machine':   'https://muscle.wiki/reverse-pec-deck.gif',
+  'upright-row':         'https://muscle.wiki/upright-row.gif',
+  'shrug-bb':            'https://muscle.wiki/barbell-shrug.gif',
+  'shrug-smith':         'https://muscle.wiki/smith-machine-shrug.gif',
+  'shrug-db':            'https://muscle.wiki/dumbbell-shrug.gif',
+  'curl-bb':             'https://muscle.wiki/barbell-curl.gif',
+  'curl-ez':             'https://muscle.wiki/ez-bar-curl.gif',
+  'curl-db':             'https://muscle.wiki/dumbbell-bicep-curl.gif',
+  'curl-hammer':         'https://muscle.wiki/hammer-curl.gif',
+  'curl-preacher-bb':    'https://muscle.wiki/preacher-curl.gif',
+  'curl-preacher-machine':'https://muscle.wiki/machine-preacher-curl.gif',
+  'curl-concentration':  'https://muscle.wiki/concentration-curl.gif',
+  'curl-cable':          'https://muscle.wiki/cable-bicep-curl.gif',
+  'curl-reverse':        'https://muscle.wiki/reverse-curl.gif',
+  'tri-ext-machine':     'https://muscle.wiki/machine-tricep-extension.gif',
+  'tri-ext-db':          'https://muscle.wiki/dumbbell-tricep-extension.gif',
+  'jm-press':            'https://muscle.wiki/jm-press.gif',
+  'pushdown':            'https://muscle.wiki/tricep-pushdown.gif',
+  'pushdown-rope':       'https://muscle.wiki/rope-pushdown.gif',
+  'tri-overhead-cable':  'https://muscle.wiki/cable-overhead-tricep-extension.gif',
+  'skullcrusher':        'https://muscle.wiki/skullcrusher.gif',
+  'dip-seated-machine':  'https://muscle.wiki/machine-tricep-dip.gif',
+  'close-grip-bench':    'https://muscle.wiki/close-grip-bench-press.gif',
+  'plank':               'https://muscle.wiki/plank.gif',
+  'cable-crunch':        'https://muscle.wiki/cable-crunch.gif',
+  'hanging-knee-raise':  'https://muscle.wiki/hanging-knee-raise.gif',
+  'hanging-leg-raise':   'https://muscle.wiki/hanging-leg-raise.gif',
+  'ab-wheel':            'https://muscle.wiki/ab-wheel-rollout.gif',
+  'russian-twist':       'https://muscle.wiki/russian-twist.gif',
+  'pallof':              'https://muscle.wiki/pallof-press.gif',
+  'farmers':             'https://muscle.wiki/farmers-walk.gif',
+  'sled-push':           'https://muscle.wiki/sled-push.gif',
+  'clean-jerk':          'https://muscle.wiki/clean-and-jerk.gif',
+  'snatch':              'https://muscle.wiki/snatch.gif',
+  'hang-clean':          'https://muscle.wiki/hang-clean.gif',
+  'power-clean':         'https://muscle.wiki/power-clean.gif',
+  'split-jerk':          'https://muscle.wiki/split-jerk.gif',
+  'push-press':          'https://muscle.wiki/push-press.gif',
+};
 
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1378,7 +1488,12 @@ function showExerciseHistory(exName) {
   }).join("");
   const prLine = best ? `<div class="card"><div class="row between"><div><span class="pill">PR</span> <b>${best.weight} × ${best.reps}</b></div><div class="muted small">est 1RM ${round(best.est)} · ${fmtDate(best.date)}</div></div></div>` : `<div class="muted small">No history yet.</div>`;
   const chart = weightChart(hist);
-  openModal(`<h2>${exName}</h2>${prLine}<div style="height:10px"></div>${chart}<div style="height:12px"></div>${lines || ""}`);
+  const exObj = state.exercises.find(x => x.name === exName);
+  const gifUrl = exObj ? EX_GIF[exObj.id] : null;
+  const demoHtml = gifUrl
+    ? `<div class="ex-demo"><img src="${gifUrl}" alt="${escapeHtml(exName)}" loading="lazy" onerror="this.closest('.ex-demo').style.display='none'"><span class="ex-demo-label">Demo</span></div>`
+    : '';
+  openModal(`${demoHtml}<h2>${exName}</h2>${prLine}<div style="height:10px"></div>${chart}<div style="height:12px"></div>${lines || ""}`);
 }
 function weightChart(hist) {
   if (!hist.length) return "";
