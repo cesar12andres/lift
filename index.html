@@ -36,6 +36,9 @@
   --grad-cardio: linear-gradient(135deg, #ff6b1a 0%, #ff1a4b 100%);
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 6px 20px rgba(0,200,255,0.12);
+  --shadow-lg: 0 12px 32px rgba(0,200,255,0.08);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
@@ -205,6 +208,18 @@ a { color: var(--accent); text-decoration: none; }
 @keyframes skel {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+@keyframes countIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes prShimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+@keyframes prToastSlide {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Modal */
@@ -1093,10 +1108,14 @@ function renderHome() {
     recent.appendChild(el);
   }
 
-  // Stats tiles
-  $("#stat-week-workouts").textContent = workoutsThisWeek() + (state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= Date.now()-7*86400000).length;
-  $("#stat-week-vol").textContent = round(volumeThisWeek());
-  $("#stat-streak").textContent = streakDays();
+  // Stats tiles with animated counters
+  const weekWorkouts = workoutsThisWeek() + (state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= Date.now()-7*86400000).length;
+  const weekVol = round(volumeThisWeek());
+  const streak = streakDays();
+
+  animateCounter("stat-week-workouts", weekWorkouts, 600);
+  animateCounter("stat-week-vol", weekVol, 700);
+  animateCounter("stat-streak", streak, 650);
 }
 function suggestNext() {
   // Find muscle groups not trained in last 5 days vs common groups
@@ -1298,17 +1317,68 @@ function addSetToExercise(exIdx) {
   ex.sets.push({ type:"normal", weight: last?.weight ?? null, reps: last?.reps ?? null, rpe:null, done:false, distance:null, duration:null });
   save(); render();
 }
+/* -------------------- ANIMATED COUNTERS & CELEBRATIONS -------------------- */
+function animateCounter(elementId, finalValue, duration = 800) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const startValue = 0;
+  const startTime = Date.now();
+  const easing = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+  const animate = () => {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easing(progress);
+    const current = Math.floor(startValue + (finalValue - startValue) * eased);
+    el.textContent = current;
+    if (progress < 1) requestAnimationFrame(animate);
+    else el.textContent = finalValue;
+  };
+  animate();
+}
+
+function prCelebration(exerciseName, weight, reps) {
+  const el = document.createElement("div");
+  el.className = "pr-toast";
+  el.innerHTML = `🎉 NEW PR<br><b>${weight} × ${reps}</b><br><span style="font-size:12px">${exerciseName}</span>`;
+  el.style.cssText = `
+    position: fixed;
+    top: calc(20px + var(--sat));
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #1a1400;
+    padding: 16px 24px;
+    border-radius: 14px;
+    z-index: 130;
+    font-weight: 800;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(255,215,0,0.5);
+    font-size: 14px;
+    line-height: 1.4;
+    animation: prToastSlide 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  `;
+  document.body.appendChild(el);
+  let shimmerInterval = setInterval(() => {
+    el.style.opacity = el.style.opacity === "0.6" ? "1" : "0.6";
+  }, 400);
+  setTimeout(() => {
+    clearInterval(shimmerInterval);
+    el.remove();
+  }, 2500);
+  vibrate([100, 50, 100, 50, 200]);
+}
+
 function toggleSetDone(exIdx, sIdx) {
   const s = state.active.exercises[exIdx].sets[sIdx];
   s.done = !s.done;
   if (s.done) {
-    // PR check before save
     const exName = state.active.exercises[exIdx].name;
     if (s.weight && s.reps && isPRSet(exName, s.weight, s.reps)) {
-      toast("🎉 New PR: " + s.weight + " × " + s.reps);
+      prCelebration(exName, s.weight, s.reps);
     }
     startRest();
-    vibrate(30);
+    vibrate([20, 10, 20]);
   }
   save(); render();
 }
@@ -1386,7 +1456,9 @@ function repDone() {
   s.done = true;
   save();
   const exName = state.active.exercises[rc.exIdx].name;
-  if (s.weight && s.reps && isPRSet(exName, s.weight, s.reps)) toast("🎉 New PR: " + s.weight + " × " + s.reps);
+  if (s.weight && s.reps && isPRSet(exName, s.weight, s.reps)) {
+    prCelebration(exName, s.weight, s.reps);
+  }
   startRest();
   closeRepCounter();
   render();
@@ -1654,11 +1726,13 @@ function renderExercisesScreen() {
 
 /* -------------------- STATS SCREEN -------------------- */
 function renderStats() {
-  $("#tot-workouts").textContent = state.workouts.length;
+  animateCounter("tot-workouts", state.workouts.length, 600);
+
   let totalSets = 0, totalVol = 0;
   for (const w of state.workouts) for (const ex of w.exercises) for (const s of ex.sets) if (s.done) { totalSets++; totalVol += (s.weight||0)*(s.reps||0); }
-  $("#tot-sets").textContent = totalSets;
-  $("#tot-vol").textContent = round(totalVol);
+
+  animateCounter("tot-sets", totalSets, 650);
+  animateCounter("tot-vol", round(totalVol), 700);
 
   // PRs
   const prs = allPRs();
@@ -2284,9 +2358,10 @@ function renderLog() {
   ].length;
   const cutoff7 = Date.now() - 7*86400000;
   const cardio7 = (state.externalSessions||[]).filter(e => new Date(e.date).getTime() >= cutoff7).length;
-  $("#log-stat-streak").textContent = streakDays();
-  $("#log-stat-mo").textContent = monthlyCount;
-  $("#log-stat-cardio").textContent = cardio7;
+
+  animateCounter("log-stat-streak", streakDays(), 600);
+  animateCounter("log-stat-mo", monthlyCount, 650);
+  animateCounter("log-stat-cardio", cardio7, 700);
 
   // Heatmap — 16 weeks (~4 months) grid, Mon-rowed
   $("#heatmap").innerHTML = buildHeatmapHtml(16);
