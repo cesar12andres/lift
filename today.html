@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today's Workout</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #888;
+      --accent-strength: #00d4ff;
+      --accent-cardio: #ff7c2a;
+      --accent-rest: #4caf50;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      min-height: 100dvh;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    .date-line {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .session-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .session-meta {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .accent-strength { color: var(--accent-strength); }
+    .accent-cardio   { color: var(--accent-cardio); }
+    .accent-rest     { color: var(--accent-rest); }
+
+    /* Exercise table */
+    .exercise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exercise-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .ex-name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .ex-stats {
+      display: flex;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .ex-stats span strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .ex-note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* Cardio / rest block */
+    .prose-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #ccc;
+    }
+
+    /* Error / warning */
+    .warning {
+      padding: 16px;
+      border-radius: 10px;
+      background: #1e1400;
+      border: 1px solid #4a3000;
+      color: #ffb347;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .reload-btn {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">Loading…</div>
+
+  <script>
+    const EX_NAMES = {
+      "face-pull": "Face Pull",
+      "bench-bb": "Bench BB",
+      "ohp-db": "OHP DB",
+      "bench-incline-db": "Incline DB Press",
+      "lat-raise": "Lateral Raise",
+      "pushdown-rope": "Rope Pushdown",
+      "rdl-barbell": "RDL",
+      "bulgarian": "Bulgarian Split Squat",
+      "leg-curl-seated": "Seated Leg Curl",
+      "hip-thrust": "Hip Thrust",
+      "calf-standing": "Standing Calf Raise",
+      "hanging-knee-raise": "Hanging Knee Raise",
+      "pullup": "Pull-Up",
+      "row-bent-bb": "Barbell Row",
+      "row-chest-supported": "Chest-Supported Row",
+      "lat-pulldown": "Lat Pulldown",
+      "rear-delt-fly": "Rear Delt Fly",
+      "curl-hammer": "Hammer Curl",
+      "squat-pendulum": "Pendulum Squat",
+      "leg-press": "Leg Press",
+      "leg-extension": "Leg Extension",
+      "calf-seated": "Seated Calf Raise",
+      "cable-crunch": "Cable Crunch",
+    };
+
+    const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    function todayKey() {
+      const d = new Date().getDay(); // 0=Sun
+      return d === 0 ? "7" : String(d);
+    }
+
+    function formatDate() {
+      const d = new Date();
+      return `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+    }
+
+    function isStale(weekOf) {
+      const base = new Date(weekOf + "T00:00:00");
+      return (Date.now() - base.getTime()) > 7 * 24 * 60 * 60 * 1000;
+    }
+
+    function renderStrength(session) {
+      const items = session.exercises.map(ex => {
+        const name = EX_NAMES[ex.exId] || ex.name || ex.exId;
+        const target = ex.target ? ` @ ${ex.target} kg` : "";
+        const note = ex.note ? `<div class="ex-note">${ex.note}</div>` : "";
+        return `
+          <div class="exercise-card">
+            <div class="ex-name">${name}</div>
+            <div class="ex-stats">
+              <span><strong>${ex.sets}×${ex.reps}</strong></span>
+              <span>RPE <strong>${ex.rpe}</strong></span>
+              <span>Rest <strong>${ex.rest}s</strong></span>
+              ${ex.target ? `<span><strong>${ex.target} kg</strong></span>` : ""}
+            </div>
+            ${note}
+          </div>`;
+      }).join("");
+      return `<div class="exercise-list">${items}</div>`;
+    }
+
+    function renderCardio(session) {
+      const kcal = session.target?.kcal ? ` · ${session.target.kcal} kcal` : "";
+      return `<div class="prose-block">${session.note || ""}</div>`;
+    }
+
+    function renderRest(session) {
+      return `<div class="prose-block">${session.note || "Rest day."}</div>`;
+    }
+
+    function accentClass(type) {
+      if (type === "strength") return "accent-strength";
+      if (type === "cardio")   return "accent-cardio";
+      return "accent-rest";
+    }
+
+    async function render() {
+      const root = document.getElementById("root");
+      let program;
+
+      try {
+        const res = await fetch("./programs/current.json?v=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("not found");
+        program = await res.json();
+      } catch {
+        root.innerHTML = `<div class="warning">⚠️ Could not load <code>programs/current.json</code>.<br>Run <strong>/coach</strong> in the vault to generate this week's plan.</div>`;
+        return;
+      }
+
+      if (isStale(program.weekOf)) {
+        root.innerHTML = `<div class="warning">⚠️ Workout plan is stale (week of ${program.weekOf}).<br>Run <strong>/coach</strong> to generate a new plan.</div>`;
+        return;
+      }
+
+      const key = todayKey();
+      const session = program.schedule[key];
+
+      if (!session) {
+        root.innerHTML = `<div class="warning">No session found for today (day ${key}).</div>`;
+        return;
+      }
+
+      const accent = accentClass(session.type);
+      const meta = session.duration ? `${session.duration} min` : "";
+      const target = session.target?.kcal ? ` · ${session.target.kcal} kcal target` : "";
+
+      let body = "";
+      if (session.type === "strength")    body = renderStrength(session);
+      else if (session.type === "cardio") body = renderCardio(session);
+      else                                body = renderRest(session);
+
+      root.innerHTML = `
+        <header>
+          <div class="date-line">${formatDate()}</div>
+          <div class="session-title ${accent}">${session.name}</div>
+          ${meta ? `<div class="session-meta">${meta}${target}</div>` : ""}
+        </header>
+        ${body}
+        <span class="reload-btn" onclick="location.reload()">refresh</span>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
