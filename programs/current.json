@@ -14,12 +14,12 @@
       "duration": 55,
       "note": "Already completed today (Mon May 11). Face pulls first to pre-activate rear delts.",
       "exercises": [
-        { "exId": "face-pull", "sets": 3, "reps": "15", "rest": 60, "rpe": 6, "note": "Warmup + activation — slow, elbows high" },
-        { "exId": "bench-bb", "sets": 4, "reps": "8", "rest": 120, "rpe": 7 },
-        { "exId": "ohp-db", "sets": 3, "reps": "10", "rest": 90, "rpe": 7 },
-        { "exId": "bench-incline-db", "sets": 3, "reps": "10", "rest": 90, "rpe": 7 },
-        { "exId": "lat-raise", "sets": 3, "reps": "15", "rest": 60, "rpe": 8 },
-        { "exId": "pushdown-rope", "sets": 3, "reps": "12", "rest": 60, "rpe": 8 }
+        { "exId": "face-pull", "sets": 3, "reps": "15", "rest": 60, "rpe": 6, "target": 120, "note": "Warmup + activation — slow, elbows high" },
+        { "exId": "bench-bb", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "target": 190 },
+        { "exId": "ohp-db", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "target": 105 },
+        { "exId": "bench-incline-db", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "target": 140 },
+        { "exId": "lat-raise", "sets": 3, "reps": "15", "rest": 60, "rpe": 8, "target": 40 },
+        { "exId": "pushdown-rope", "sets": 3, "reps": "12", "rest": 60, "rpe": 8, "target": 143 }
       ]
     },
     "2": {
@@ -28,11 +28,11 @@
       "duration": 55,
       "note": "Priority day for hamstrings + glutes. Slow eccentric on RDL and leg curl. Strong hamstrings = better running gait + injury insurance.",
       "exercises": [
-        { "exId": "rdl-barbell", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "note": "Slow eccentric, feel stretch mid-hamstring" },
-        { "exId": "bulgarian", "sets": 3, "reps": "10 each side", "rest": 90, "rpe": 7, "note": "Unilateral — match reps per side, address asymmetry" },
-        { "exId": "leg-curl-seated", "sets": 4, "reps": "12", "rest": 75, "rpe": 8 },
-        { "exId": "hip-thrust", "sets": 3, "reps": "10", "rest": 90, "rpe": 7 },
-        { "exId": "calf-standing", "sets": 4, "reps": "12", "rest": 60, "rpe": 8, "note": "Full ROM, slow eccentric — calves matter for running" },
+        { "exId": "rdl-barbell", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "target": 190, "note": "Slow eccentric, feel stretch mid-hamstring" },
+        { "exId": "bulgarian", "sets": 3, "reps": "10 each side", "rest": 90, "rpe": 7, "target": 25, "note": "Add 25 lb DB — was bodyweight last week. Match reps per side." },
+        { "exId": "leg-curl-seated", "sets": 4, "reps": "13", "rest": 75, "rpe": 8, "target": 145 },
+        { "exId": "hip-thrust", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "note": "Skipped last week — do not skip today" },
+        { "exId": "calf-standing", "sets": 4, "reps": "12", "rest": 60, "rpe": 8, "note": "Skipped last week — do not skip today. Full ROM, slow eccentric." },
         { "exId": "hanging-knee-raise", "sets": 3, "reps": "15", "rest": 60, "rpe": 8 }
       ]
     },
