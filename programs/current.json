@@ -12,7 +12,7 @@
       "type": "strength",
       "name": "Upper Push",
       "duration": 55,
-      "note": "Already completed today (Mon May 11). Face pulls first to pre-activate rear delts.",
+      "note": "Elliptical 20 min warmup + 20 min cooldown (~1.2 miles each). Face pulls first to pre-activate rear delts.",
       "exercises": [
         { "exId": "face-pull", "sets": 3, "reps": "15", "rest": 60, "rpe": 6, "target": 120, "note": "Warmup + activation — slow, elbows high" },
         { "exId": "bench-bb", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "target": 190 },
@@ -26,14 +26,14 @@
       "type": "strength",
       "name": "Lower Hinge (posterior chain)",
       "duration": 55,
-      "note": "Priority day for hamstrings + glutes. Slow eccentric on RDL and leg curl. Strong hamstrings = better running gait + injury insurance.",
+      "note": "Elliptical 20 min warmup + 20 min cooldown (~1.2 miles each). Priority: hamstrings + glutes. Slow eccentric on RDL and leg curl.",
       "exercises": [
-        { "exId": "rdl-barbell", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "target": 190, "note": "Slow eccentric, feel stretch mid-hamstring" },
-        { "exId": "bulgarian", "sets": 3, "reps": "10 each side", "rest": 90, "rpe": 7, "target": 25, "note": "Add 25 lb DB — was bodyweight last week. Match reps per side." },
-        { "exId": "leg-curl-seated", "sets": 4, "reps": "13", "rest": 75, "rpe": 8, "target": 145 },
-        { "exId": "hip-thrust", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "note": "Skipped last week — do not skip today" },
-        { "exId": "calf-standing", "sets": 4, "reps": "12", "rest": 60, "rpe": 8, "note": "Skipped last week — do not skip today. Full ROM, slow eccentric." },
-        { "exId": "hanging-knee-raise", "sets": 3, "reps": "15", "rest": 60, "rpe": 8 }
+        { "exId": "rdl-barbell", "sets": 4, "reps": "8", "rest": 120, "rpe": 7, "target": 225, "note": "Did 3×10 last session — match weight, add the 4th set this week" },
+        { "exId": "bulgarian", "sets": 4, "reps": "10 each side", "rest": 90, "rpe": 7, "note": "Bodyweight again — 4 sets. Add load next week if all sets felt easy." },
+        { "exId": "leg-curl-seated", "sets": 4, "reps": "12", "rest": 75, "rpe": 8, "target": 165 },
+        { "exId": "hip-thrust", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "target": 225 },
+        { "exId": "calf-seated", "sets": 3, "reps": "12", "rest": 60, "rpe": 8, "target": 70 },
+        { "exId": "hanging-knee-raise", "sets": 4, "reps": "10", "rest": 60, "rpe": 8 }
       ]
     },
     "3": {
@@ -47,7 +47,7 @@
       "type": "strength",
       "name": "Upper Pull",
       "duration": 55,
-      "note": "Rear-delt volume day. Match leading hand on pull-ups — trap asymmetry should normalize now boxing is gone. ≥9 rear-delt sets this week total.",
+      "note": "Elliptical 20 min warmup + 20 min cooldown (~1.2 miles each). Rear-delt volume day. Match leading hand on pull-ups.",
       "exercises": [
         { "exId": "pullup", "sets": 4, "reps": "AMRAP", "rest": 120, "rpe": 8, "note": "If < 5 reps per set, use assisted" },
         { "exId": "row-bent-bb", "sets": 4, "reps": "8", "rest": 120, "rpe": 7 },
@@ -61,7 +61,7 @@
       "type": "strength",
       "name": "Lower Squat (quads — moderated)",
       "duration": 50,
-      "note": "10-min bike warmup first. Knees share load with 2 run days — watch for accumulated fatigue by Friday. If knees feel beat up, drop to 3 sets of pendulum squat and skip leg extension.",
+      "note": "Elliptical 20 min warmup + 20 min cooldown (~1.2 miles each). Knees share load with run days — if beat up, drop to 3 sets pendulum squat and skip leg extension.",
       "exercises": [
         { "exId": "squat-pendulum", "sets": 3, "reps": "8", "rest": 120, "rpe": 7, "target": 320, "note": "3 sets — running shares the knee bucket" },
         { "exId": "leg-press", "sets": 3, "reps": "10", "rest": 90, "rpe": 7, "target": 410 },
